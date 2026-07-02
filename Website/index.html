@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioMove | كرسي طبي متحرك ذكي</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .gallery-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:25px;
+}
+
+.gallery-item{
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,.15);
+border-radius:20px;
+overflow:hidden;
+transition:.4s;
+cursor:pointer;
+}
+
+.gallery-item:hover{
+transform:translateY(-10px) scale(1.03);
+box-shadow:0 20px 40px rgba(0,0,0,.2);
+}
+
+.gallery-item img{
+width:100%;
+height:230px;
+object-fit:cover;
+display:block;
+}
+
+.gallery-item span{
+display:block;
+padding:18px;
+font-weight:bold;
+text-align:center;
+font-size:18px;
+}
+.stats-grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+gap:25px;
+
+}
+
+.stat-card{
+
+padding:40px;
+
+border-radius:20px;
+
+text-align:center;
+
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(20px);
+
+transition:.4s;
+
+}
+
+.stat-card:hover{
+
+transform:translateY(-10px);
+
+}
+
+.stat-card h1{
+
+font-size:55px;
+
+color:#00d9ff;
+
+}
+
+.stat-card p{
+
+font-size:20px;
+
+margin-top:10px;
+
+}
+        /* ================= المتغيرات الأساسية ================= */
+        :root {
+            --bg-color: #f8fafc;        
+            --section-bg: #ffffff;      
+            --primary-color: #0d9488;   
+            --primary-glow: rgba(13, 148, 136, 0.15);
+            --danger-color: #e11d48;     
+            --success-color: #059669;    
+            --text-main: #0f172a;        
+            --text-muted: #475569;       
+            --border-color: rgba(13, 148, 136, 0.1);
+            --card-gradient-1: #ffffff;
+            --card-gradient-2: #f8fafc;
+            --header-bg: rgba(255, 255, 255, 0.85);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.dark-mode {
+            --bg-color: #0f172a;        
+            --section-bg: #1e293b;      
+            --text-main: #f8fafc;        
+            --text-muted: #94a3b8;       
+            --border-color: rgba(13, 148, 136, 0.25);
+            --card-gradient-1: #1e293b;
+            --card-gradient-2: #0f172a;
+            --header-bg: rgba(15, 23, 42, 0.85);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.7; overflow-x: hidden; padding-top: 80px; transition: background-color 0.4s ease, color 0.4s ease; }
+        a { text-decoration: none; color: inherit; }
+
+        #progress-bar { position: fixed; top: 0; right: 0; width: 0%; height: 4px; background: linear-gradient(to left, var(--primary-color), #06b6d4); z-index: 9999; transition: width 0.1s ease; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* الهيدر */
+        header { background-color: var(--header-bg); backdrop-filter: blur(15px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid var(--border-color); transition: background-color 0.4s ease; }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; max-width: 1300px; margin: 0 auto; }
+        .logo { font-size: 30px; font-weight: 900; color: var(--primary-color); text-shadow: 0 0 10px var(--primary-glow); }
+        .nav-links { display: flex; gap: 20px; list-style: none; }
+        .nav-links a { font-weight: 600; font-size: 14px; color: var(--text-muted); position: relative; padding-bottom: 5px; transition: var(--transition); }
+        .nav-links a::after { content: ''; position: absolute; bottom: 0; right: 0; width: 0; height: 2px; background-color: var(--primary-color); transition: var(--transition); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: var(--primary-color); }
+        /*================ Scroll Spy =================*/
+
+.nav-links a.active{
+
+color:var(--primary-color);
+
+font-weight:700;
+
+}
+
+.nav-links a.active::after{
+
+width:100%;
+
+}
+        .header-controls { display: flex; align-items: center; gap: 15px; }
+        .theme-btn { background: transparent; border: none; color: var(--primary-color); font-size: 22px; cursor: pointer; transition: var(--transition); }
+        .theme-btn:hover { transform: scale(1.1); text-shadow: 0 0 10px var(--primary-glow); }
+        .menu-btn { display: none; font-size: 24px; cursor: pointer; color: var(--primary-color); }
+        
+        section { padding: 80px 5%; max-width: 1300px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: 36px; margin-bottom: 60px; font-weight: 900; color: var(--text-main); transition: color 0.4s ease; }
+        .section-title span { color: var(--primary-color); position: relative; }
+        
+        /* الهيرو والأزرار */
+        .hero { min-height: 85vh; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; padding: 40px 5%; }
+        body:not(.dark-mode) .hero { background: radial-gradient(circle at center, #ffffff 0%, var(--bg-color) 100%); }
+        body.dark-mode .hero { background: radial-gradient(circle at center, var(--section-bg) 0%, var(--bg-color) 100%); }
+        .hero-content h1 { font-size: 60px; margin-bottom: 20px; font-weight: 900; line-height: 1.2; color: var(--text-main); }
+        .typewriter-text { color: var(--primary-color); text-shadow: 0 0 20px var(--primary-glow); }
+        .hero-content p { font-size: 20px; color: var(--text-muted); margin-bottom: 40px; max-width: 750px; margin: 0 auto 40px auto; }
+        
+        .btn-group { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .btn { background: linear-gradient(45deg, var(--primary-color), #0f766e); color: #fff; padding: 15px 40px; font-size: 16px; font-weight: 700; border-radius: 30px; border: none; cursor: pointer; transition: var(--transition); box-shadow: 0 10px 20px rgba(13, 148, 136, 0.2); display: inline-block; }
+        .btn:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(13, 148, 136, 0.4); }
+
+        /* أزرار التحميل الجديدة */
+        .resource-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+        .btn-outline { background: transparent; color: var(--text-main); border: 2px solid var(--primary-color); padding: 10px 22px; font-size: 14px; font-weight: 700; border-radius: 30px; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; }
+        .btn-outline:hover { background: var(--primary-color); color: #fff; transform: translateY(-3px); box-shadow: 0 5px 15px var(--primary-glow); }
+
+        /* البطاقات والأقسام المشتركة */
+        .text-box, .architecture-box, .feature-card, .diagram-container, .team-card, .video-container, .testimonial-card, .contact-container { background-color: var(--section-bg); border: 1px solid var(--border-color); transition: var(--transition); border-radius: 20px; }
+        .spec-card, .monitor-card { background: linear-gradient(145deg, var(--card-gradient-1), var(--card-gradient-2)); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); transition: var(--transition); box-shadow: 0 10px 25px rgba(0,0,0,0.02); }
+
+        /* الميزات والأمان */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; }
+        .feature-card { padding: 40px 30px; text-align: center; }
+        .feature-card:hover { border-color: var(--primary-color); transform: translateY(-5px); }
+        .feature-icon { font-size: 50px; margin-bottom: 25px; color: var(--primary-color); }
+        .feature-card.safe .feature-icon { color: var(--danger-color); }
+        .feature-card h4 { font-size: 22px; margin-bottom: 15px; color: var(--text-main); }
+        .feature-card p { color: var(--text-muted); }
+
+        /* قسم الفيديو التجريبي */
+        .video-container { max-width: 900px; margin: 0 auto; padding: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); overflow: hidden; position: relative; }
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 15px; overflow: hidden; background: #000; }
+        .video-wrapper iframe, .video-wrapper video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        /* المعمارية واللوحة الحية */
+        .architecture-box { padding: 40px; margin-bottom: 50px; }
+        .data-flow { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
+        .flow-step { background: var(--bg-color); padding: 25px 15px; border-radius: 15px; border: 1px solid var(--border-color); text-align: center; flex: 1; min-width: 140px; color: var(--text-main); }
+        .flow-arrow { color: var(--text-muted); font-size: 24px; animation: pulseArrow 2s infinite; }
+        @keyframes pulseArrow { 0%, 100% { transform: translateX(5px); opacity: 0.3; } 50% { transform: translateX(-5px); opacity: 1; } }
+
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+        .monitor-card { position: relative; overflow: hidden; padding: 25px; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; color: var(--text-muted); }
+        .live-badge { background-color: rgba(225, 29, 72, 0.1); color: var(--danger-color); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 5px; }
+        .live-badge::before { content: ''; width: 8px; height: 8px; background-color: var(--danger-color); border-radius: 50%; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .main-reading { font-size: 45px; font-weight: 900; color: var(--text-main); text-align: center; margin: 10px 0; transition: all 0.3s ease; }
+        .main-reading span { font-size: 18px; color: var(--text-muted); font-weight: 500; }
+        .reading-flash { color: var(--success-color); text-shadow: 0 0 15px rgba(5, 150, 105, 0.4); }
+
+        /* خريطة التطوير وفريق العمل */
+        .roadmap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .roadmap-step { background: var(--section-bg); border: 1px solid var(--border-color); padding: 30px; border-radius: 15px; transition: var(--transition); }
+        .roadmap-step:hover { border-color: var(--primary-color); transform: translateY(-5px); }
+        .roadmap-step .phase { background: var(--primary-color); color: #fff; padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: bold; display: inline-block; margin-bottom: 15px; }
+
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; }
+        .team-card { padding: 40px 20px; text-align: center; }
+        .team-img { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 20px auto; border: 3px solid var(--border-color); padding: 5px; object-fit: cover; }
+        .team-card h4 { color: var(--text-main); font-size: 20px; }
+        .team-card p { color: var(--primary-color); font-size: 14px; font-weight: bold; margin-bottom: 15px; }
+        .social-icons a { color: var(--text-muted); font-size: 18px; margin: 0 8px; transition: var(--transition); }
+        .social-icons a:hover { color: var(--primary-color); }
+
+        /* قسم آراء الخبراء */
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .testimonial-card { padding: 40px 30px; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.01); }
+        .testimonial-card i.quote-icon { position: absolute; top: 30px; left: 30px; font-size: 40px; color: var(--primary-glow); transform: rotate(180deg); }
+        .testimonial-card p { color: var(--text-muted); font-style: italic; margin-bottom: 25px; font-size: 16px; }
+        .expert-info { display: flex; align-items: center; gap: 15px; }
+        .expert-avatar { width: 50px; height: 50px; border-radius: 50%; background: var(--primary-color); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; }
+        .expert-details h5 { color: var(--text-main); font-size: 16px; font-weight: 700; }
+        .expert-details span { color: var(--primary-color); font-size: 13px; font-weight: 600; }
+
+        /* الأسئلة الشائعة */
+        .faq-container { max-width: 800px; margin: 0 auto; }
+        .faq-item { background: var(--section-bg); border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 15px; overflow: hidden; }
+        .faq-question { padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: var(--text-main); }
+        .faq-question i { transition: transform 0.4s ease; color: var(--primary-color); }
+        .faq-answer { padding: 0 20px; max-height: 0; overflow: hidden; transition: all 0.4s ease; color: var(--text-muted); }
+        .faq-item.active { border-color: var(--primary-color); }
+        .faq-item.active .faq-answer { padding: 0 20px 20px 20px; max-height: 200px; }
+        .faq-item.active .faq-question i { transform: rotate(180deg); }
+        /* الفوتر */
+        footer { background: var(--section-bg); border-top: 1px solid var(--border-color); padding: 40px 5%; text-align: center; transition: background-color 0.4s ease; }
+        .footer-content { max-width: 1300px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .footer-logo { font-size: 26px; font-weight: 900; color: var(--primary-color); }
+        .footer-links { display: flex; gap: 20px; list-style: none; }
+        .footer-links a { color: var(--text-muted); font-size: 14px; transition: var(--transition); }
+        .footer-links a:hover { color: var(--primary-color); }
+        .copyright { color: var(--text-muted); font-size: 14px; margin-top: 10px; }
+
+        /* زر العودة للأعلى */
+        #back-to-top { position: fixed; bottom: 30px; left: 30px; background: var(--primary-color); color: #fff; width: 45px; height: 45px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; opacity: 0; visibility: hidden; transition: var(--transition); z-index: 999; box-shadow: 0 5px 15px rgba(13, 148, 136, 0.3); }
+        #back-to-top.show { opacity: 1; visibility: visible; }
+        #back-to-top:hover { transform: translateY(-5px); background: #0f766e; }
+/*================ Dashboard Upgrade =================*/
+
+.dashboard-grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+
+gap:25px;
+
+margin-top:40px;
+
+}
+
+.monitor-card{
+
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(20px);
+
+border:1px solid rgba(255,255,255,.15);
+
+border-radius:20px;
+
+padding:25px;
+
+transition:.4s;
+
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+overflow:hidden;
+
+position:relative;
+
+}
+
+.monitor-card:hover{
+
+transform:translateY(-10px);
+
+box-shadow:0 20px 45px rgba(0,0,0,.2);
+
+}
+
+.monitor-card::before{
+
+content:"";
+
+position:absolute;
+
+top:0;
+
+left:-100%;
+
+width:100%;
+
+height:4px;
+
+background:linear-gradient(90deg,#00e5ff,#00ff95);
+
+transition:.5s;
+
+}
+
+.monitor-card:hover::before{
+
+left:0;
+
+}
+
+.card-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:18px;
+
+font-size:18px;
+
+font-weight:bold;
+
+color:var(--text-main);
+
+}
+
+.card-header i{
+
+color:var(--primary-color);
+
+margin-right:8px;
+
+}
+
+.main-reading{
+
+font-size:34px;
+
+font-weight:900;
+
+text-align:center;
+
+margin-top:10px;
+
+color:var(--primary-color);
+
+transition:.3s;
+
+word-break:break-word;
+
+}
+
+.main-reading span{
+
+font-size:18px;
+
+margin-left:5px;
+
+color:var(--text-muted);
+
+}
+
+.live-badge{
+
+background:#00d08422;
+
+color:#00d084;
+
+padding:5px 12px;
+
+border-radius:30px;
+
+font-size:12px;
+
+font-weight:bold;
+
+animation:pulse 1.5s infinite;
+
+}
+
+@keyframes pulse{
+
+0%{opacity:1;}
+
+50%{opacity:.5;}
+
+100%{opacity:1;}
+
+}
+/*================ Mobile App =================*/
+
+.app-grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+gap:30px;
+
+margin-top:40px;
+
+}
+
+.app-card{
+
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.15);
+
+border-radius:20px;
+
+overflow:hidden;
+
+transition:.4s;
+
+text-align:center;
+
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+cursor:pointer;
+
+}
+
+.app-card:hover{
+
+transform:translateY(-12px) scale(1.03);
+
+box-shadow:0 20px 40px rgba(0,0,0,.18);
+
+}
+
+.app-card img{
+
+width:100%;
+
+height:520px;
+
+object-fit:cover;
+
+display:block;
+
+transition:.4s;
+
+}
+
+.app-card:hover img{
+
+transform:scale(1.05);
+
+}
+
+.app-card h3{
+
+padding:20px;
+
+font-size:22px;
+
+font-weight:bold;
+
+color:var(--text-main);
+
+}
+/*================ 3D Hover =================*/
+
+.feature-card,
+.monitor-card,
+.gallery-item,
+.stat-card,
+.app-card{
+
+transform-style:preserve-3d;
+
+will-change:transform;
+
+transition:
+transform .15s linear,
+box-shadow .3s;
+
+}
+
+@media (max-width: 768px) {
+            .nav-links { display: flex; flex-direction: column; position: absolute; top: 70px; left: -100%; width: 100%; background-color: var(--section-bg); padding: 20px 0; transition: var(--transition); text-align: center; border-bottom: 1px solid var(--border-color); }
+            .nav-links.active { left: 0; }
+            .menu-btn { display: block; }
+            .data-flow { flex-direction: column; }
+            .flow-arrow { transform: rotate(-90deg); margin: 10px 0; }
+            .contact-container { padding: 25px; }
+            .resource-buttons { flex-direction: column; width: 100%; max-width: 280px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+    <button id="back-to-top" title="العودة للأعلى"><i class="fas fa-chevron-up"></i></button>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">BioMove</div>
+            <ul class="nav-links">
+
+<li><a href="#home">الرئيسية</a></li>
+<li><a href="#features">الميزات</a></li>
+<li><a href="#gallery">المعرض</a></li>
+<li><a href="#achievements">الإنجازات</a></li>
+<li><a href="#demo">العرض التوضيحي</a></li>
+<li><a href="#architecture">المعمارية</a></li>
+<li><a href="#dashboard">لوحة التحكم</a></li>
+<li><a href="#mobile-app">التطبيق المحمول</a></li>
+<li><a href="#team">الفريق</a></li>
+<li><a href="#faq">الأسئلة الشائعة</a></li>
+
+</ul>
+            <div class="header-controls">
+                <button id="theme-toggle" class="theme-btn" title="تغيير المظهر"><i class="fas fa-moon"></i></button>
+                <div class="menu-btn"><i class="fas fa-bars"></i></div>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content reveal">
+            <h1>عندما تلتقي الحركة <br><span class="typewriter-text">بالرعاية</span></h1>
+            <p>كرسي طبي متحرك ذكي يدمج بين التكنولوجيا الحديثة والتصميم المريح لتقديم استقلالية تامة وحرية تنقل آمنة.</p>
+            
+            <div class="btn-group">
+                <a href="#demo" class="btn"><i class="fas fa-play" style="margin-left: 8px;"></i> شاهد النظام يعمل</a>
+                
+                <div class="resource-buttons">
+                    <a href="#" class="btn-outline" download><i class="fas fa-file-pdf" style="color: #e11d48;"></i> كتاب المشروع (PDF)</a>
+                    <a href="#" class="btn-outline" download><i class="fas fa-file-powerpoint" style="color: #ea580c;"></i> العرض التقديمي</a>
+                    <a href="#" class="btn-outline" target="_blank"><i class="fab fa-github"></i> الكود المصدري</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features">
+        <h2 class="section-title reveal">أنظمة التحكم <span>والأمان</span></h2>
+        <div class="features-grid reveal">
+            <div class="feature-card">
+                <i class="fas fa-mobile-alt feature-icon"></i>
+                <h4>التحكم عبر التطبيق</h4>
+                <p>قيادة كاملة للكرسي من خلال تطبيق Flutter متصل عبر الـ Wi-Fi أو البلوتوث بواجهة سلسة.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-gamepad feature-icon"></i>
+                <h4>القيادة اليدوية (Joystick)</h4>
+                <p>عصا تحكم مدمجة عالية الحساسية تتيح للمستخدم التنقل التقليدي بثبات ومرونة تامة.</p>
+            </div>
+            <div class="feature-card safe">
+                <i class="fas fa-exclamation-triangle feature-icon"></i>
+                <h4>تجنب الاصطدام</h4>
+                <p>حساسات فوق صوتية (Ultrasonic) ترصد العوائق وتقوم بإيقاف الكرسي تلقائياً قبل الاصطدام.</p>
+            </div>
+            <div class="feature-card safe">
+                <i class="fas fa-user-injured feature-icon"></i>
+                <h4>إنذار رصد السقوط</h4>
+                <p>نظام ذكي يكتشف الميلان الخطير أو السقوط المفاجئ ويرسل إشعارات طوارئ للمرافقين فوراً.</p>
+            </div>
+        </div>
+    </section>
+<section id="gallery">
+
+    <h2 class="section-title reveal">
+        معرض <span>المشروع</span>
+    </h2>
+
+    <div class="gallery-grid reveal">
+
+        <div class="gallery-item">
+            <img src="images/mainchair.jpeg">
+            <span>الكرسي الذكي</span>
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/electronics.jpg">
+            <span>الإلكترونيات</span>
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/esp.jpg">
+            <span>ESP32</span>
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/app.jpg">
+            <span>التطبيق</span>
+        </div>
+
+        <div class="gallery-item">
+            <img src="images/build.jpg">
+            <span>التجميع</span>
+        </div>
+
+    </div>
+
+</section>
+<section id="achievements">
+
+<h2 class="section-title reveal">
+الإنجازات <span>المشروع</span>
+</h2>
+
+<div class="stats-grid reveal">
+
+<div class="stat-card">
+<h1>5000+</h1>
+<p>Lines of Code</p>
+</div>
+
+<div class="stat-card">
+<h1>6</h1>
+<p>Sensors</p>
+</div>
+
+<div class="stat-card">
+<h1>2</h1>
+<p>Control Modes</p>
+</div>
+
+<div class="stat-card">
+<h1>4</h1>
+<p>Safety Systems</p>
+</div>
+
+<div class="stat-card">
+<h1>100%</h1>
+<p>Real Time</p>
+</div>
+
+</div>
+
+</section>
+    <section id="demo">
+        <h2 class="section-title reveal">العرض التجريبي <span>للمشروع</span></h2>
+        <div class="video-container reveal">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+            </div>
+        </div>
+    </section>
+
+    <section id="architecture">
+        <h2 class="section-title reveal">معمارية <span>النظام</span></h2>
+        <div class="architecture-box reveal">
+            <div class="data-flow">
+                <div class="flow-step"><i class="fas fa-microchip"></i><h4>Sensors</h4></div>
+                <i class="fas fa-chevron-left flow-arrow"></i>
+                <div class="flow-step"><i class="fas fa-memory"></i><h4>ESP32 Core</h4></div>
+                <i class="fas fa-chevron-left flow-arrow"></i>
+                <div class="flow-step"><i class="fab fa-flutter"></i><h4>Flutter App</h4></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="dashboard">
+
+<h2 class="section-title reveal">
+Live <span>Dashboard</span>
+</h2>
+
+<div class="dashboard-grid reveal">
+
+<div class="monitor-card">
+<div class="card-header">
+<span><i class="fas fa-battery-three-quarters"></i> Battery</span>
+<span class="live-badge">LIVE</span>
+</div>
+<div class="main-reading" id="battery">98<span>%</span></div>
+</div>
+
+<div class="monitor-card">
+<div class="card-header">
+<span><i class="fas fa-wifi"></i> WiFi</span>
+<span class="live-badge">LIVE</span>
+</div>
+<div class="main-reading" id="wifi">Connected</div>
+</div>
+
+<div class="monitor-card">
+<div class="card-header">
+<span><i class="fab fa-bluetooth-b"></i> Bluetooth</span>
+<span class="live-badge">LIVE</span>
+</div>
+<div class="main-reading" id="bluetooth">Connected</div>
+</div>
+
+<div class="monitor-card">
+<div class="card-header">
+<span><i class="fas fa-gauge-high"></i> Speed</span>
+<span class="live-badge">LIVE</span>
+</div>
+<div class="main-reading" id="speed">1.2<span>m/s</span></div>
+</div>
+
+<div class="monitor-card">
+<div class="card-header">
+<span><i class="fas fa-road-barrier"></i> Obstacle</span>
+<span class="live-badge">LIVE</span>
+</div>
+<div class="main-reading" id="obstacle">Clear</div>
+</div>
+
+<div class="monitor-card">
+<div class="card-header">
+<span><i class="fas fa-triangle-exclamation"></i> Emergency</span>
+<span class="live-badge">LIVE</span>
+</div>
+<div class="main-reading" id="emergency">Safe</div>
+</div>
+
+<div class="monitor-card">
+<div class="card-header">
+<span><i class="fas fa-gear"></i> Motor</span>
+<span class="live-badge">LIVE</span>
+</div>
+<div class="main-reading" id="motor">Running</div>
+</div>
+
+<div class="monitor-card">
+<div class="card-header">
+<span><i class="fas fa-temperature-high"></i> Temperature</span>
+<span class="live-badge">LIVE</span>
+</div>
+<div class="main-reading" id="temp-display">
+36.5
+<span>°C</span>
+</div>
+</div>
+
+<div class="monitor-card">
+<div class="card-header">
+<span><i class="fas fa-heart"></i> Heart Rate</span>
+<span class="live-badge">LIVE</span>
+</div>
+<div class="main-reading" id="heart-rate-display">
+75
+<span>BPM</span>
+</div>
+</div>
+
+</div>
+
+</section>
+<section id="mobile-app">
+
+    <h2 class="section-title reveal">
+        Mobile <span>Application</span>
+    </h2>
+
+    <div class="app-grid reveal">
+
+        <div class="app-card">
+            <img src="images/app5.jpeg" alt="Login">
+            <h3>Emergency Tips</h3>
+        </div>
+
+        <div class="app-card">
+            <img src="images/app4.jpeg" alt="Joystick">
+            <h3>Control</h3>
+        </div>
+
+        <div class="app-card">
+            <img src="images/app1.jpeg" alt="Health">
+            <h3>Health Monitor</h3>
+        </div>
+
+        <div class="app-card">
+            <img src="images/app3.jpeg" alt="GPS">
+            <h3>GPS</h3>
+        </div>
+
+        <div class="app-card">
+            <img src="images/app2.jpeg" alt="Settings">
+            <h3>Settings</h3>
+        </div>
+
+    </div>
+
+</section>
+
+    <section id="team">
+        <h2 class="section-title reveal">فريق <span>العمل</span></h2>
+        <div class="team-grid reveal">
+            <div class="team-card">
+                <img src="images/me.jpeg" alt="Team Member" class="team-img">
+                <h4>Adham Mohammed</h4>
+                <p>Embedded Systems</p>
+                <div class="social-icons"><a href="https://www.linkedin.com/in/adham-mohammed88/"><i class="fab fa-linkedin"></i></a><a href="https://github.com/Adham-Muhammed"><i class="fab fa-github"></i></a></div>
+            </div>
+            <div class="team-card">
+                <img src="https://via.placeholder.com/150" alt="Team Member" class="team-img">
+                <h4>Eslam Atef</h4>
+                <p>Flutter Developer</p>
+                <div class="social-icons"><a href="#"><i class="fab fa-linkedin"></i></a><a href="#"><i class="fab fa-github"></i></a></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq">
+        <h2 class="section-title reveal">الأسئلة <span>الشائعة</span></h2>
+        <div class="faq-container reveal">
+            <div class="faq-item">
+                <div class="faq-question">هل يمكن للمرافق التحكم في الكرسي عن بُعد؟ <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">نعم بالتأكيد. تم تصميم تطبيق متصل بالكرسي يتيح للمرافق توجيه الكرسي ومراقبة الحالة الصحية للمريض في الوقت الفعلي.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">ماذا يحدث في حالة اقتراب الكرسي من حاجز؟ <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">يحتوي النظام على حساسات تقوم بقياس المسافات بشكل مستمر، وإذا اقترب الكرسي من حاجز سيتم فصل المحركات تلقائياً لتجنب الاصطدام.</div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">BioMove</div>
+            <ul class="footer-links">
+                <li><a href="#home">الرئيسية</a></li>
+                <li><a href="#features">الميزات</a></li>
+                <li><a href="#dashboard">اللوحة الحية</a></li>
+            </ul>
+            <p class="copyright">© 2026 مشروع BioMove. جميع الحقوق محفوظة لفريق العمل.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 1. نظام الدارك مود
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn.querySelector('i');
+        const body = document.body;
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-mode');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // 2. قائمة الهاتف وزر العودة للأعلى
+        const menuBtn = document.querySelector('.menu-btn');
+        const backToTopBtn = document.getElementById('back-to-top');
+
+        menuBtn.addEventListener('click', () => { navLinks.classList.toggle('active'); });
+        backToTopBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+        // 3. حركة ظهور العناصر عند النزول وشريط التقدم وزر الأعلى
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) { reveals[i].classList.add("active"); }
+            }
+        }
+        
+        window.onscroll = function() {
+            reveal();
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+            
+            if (winScroll > 400) { backToTopBtn.classList.add('show'); } 
+            else { backToTopBtn.classList.remove('show'); }
+        };
+        reveal();
+
+        //================ LIVE DASHBOARD =================//
+
+const battery=document.getElementById("battery");
+const speed=document.getElementById("speed");
+const obstacle=document.getElementById("obstacle");
+const emergency=document.getElementById("emergency");
+const motor=document.getElementById("motor");
+const temp=document.getElementById("temp-display");
+const heart=document.getElementById("heart-rate-display");
+
+function flash(el){
+
+el.classList.add("reading-flash");
+
+setTimeout(()=>{
+
+el.classList.remove("reading-flash");
+
+},400);
+
+}
+
+setInterval(()=>{
+
+// Battery
+
+let b=95+Math.floor(Math.random()*5);
+
+battery.innerHTML=b+"<span>%</span>";
+
+flash(battery);
+
+// Speed
+
+let s=(Math.random()*2).toFixed(1);
+
+speed.innerHTML=s+"<span>m/s</span>";
+
+flash(speed);
+
+// Temperature
+
+let t=(36.3+Math.random()*0.8).toFixed(1);
+
+temp.innerHTML=t+"<span>°C</span>";
+
+flash(temp);
+
+// Heart Rate
+
+let h=70+Math.floor(Math.random()*15);
+
+heart.innerHTML=h+"<span>BPM</span>";
+
+flash(heart);
+
+// Obstacle
+
+if(Math.random()>0.8){
+
+obstacle.innerHTML="Detected";
+
+obstacle.style.color="#ff4444";
+
+}else{
+
+obstacle.innerHTML="Clear";
+
+obstacle.style.color="#00d084";
+
+}
+
+// Emergency
+
+if(Math.random()>0.95){
+
+emergency.innerHTML="Alert";
+
+emergency.style.color="#ff4444";
+
+}else{
+
+emergency.innerHTML="Safe";
+
+emergency.style.color="#00d084";
+
+}
+
+// Motor
+
+if(Math.random()>0.15){
+
+motor.innerHTML="Running";
+
+motor.style.color="#00d084";
+
+}else{
+
+motor.innerHTML="Stopped";
+
+motor.style.color="#ff9900";
+
+}
+
+},2500);
+        // 5. الأكورديون (الأسئلة الشائعة)
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            item.querySelector('.faq-question').addEventListener('click', () => {
+                faqItems.forEach(i => { if(i !== item) i.classList.remove('active'); });
+                item.classList.toggle('active');
+            });
+        });
+        // Animated Counters
+
+const counters=document.querySelectorAll('.counter');
+
+let started=false;
+
+window.addEventListener("scroll",()=>{
+
+const section=document.getElementById("achievements");
+
+const position=section.getBoundingClientRect().top;
+
+if(position<window.innerHeight && !started){
+
+started=true;
+
+counters.forEach(counter=>{
+
+const target=+counter.dataset.target;
+
+let count=0;
+
+const speed=target/100;
+
+const update=()=>{
+
+count+=speed;
+
+if(count<target){
+
+counter.innerText=Math.floor(count);
+
+requestAnimationFrame(update);
+
+}else{
+
+counter.innerText=target.toLocaleString()+"+";
+
+}
+
+};
+
+update();
+
+});
+
+}
+
+});
+//================ 3D Hover =================//
+
+const cards=document.querySelectorAll(
+".feature-card,.monitor-card,.gallery-item,.stat-card,.app-card"
+);
+
+cards.forEach(card=>{
+
+card.addEventListener("mousemove",(e)=>{
+
+const rect=card.getBoundingClientRect();
+
+const x=e.clientX-rect.left;
+
+const y=e.clientY-rect.top;
+
+const centerX=rect.width/2;
+
+const centerY=rect.height/2;
+
+const rotateY=(x-centerX)/15;
+
+const rotateX=-(y-centerY)/15;
+
+card.style.transform=
+`perspective(900px)
+rotateX(${rotateX}deg)
+rotateY(${rotateY}deg)
+scale(1.04)`;
+
+});
+
+card.addEventListener("mouseleave",()=>{
+
+card.style.transform=
+"perspective(900px) rotateX(0deg) rotateY(0deg) scale(1)";
+
+});
+
+});
+//================ Scroll Spy =================//
+
+const navLinks = document.querySelectorAll(".nav-links a");
+const allSections = document.querySelectorAll("section");
+
+window.addEventListener("scroll", () => {
+
+let currentSection = "";
+
+allSections.forEach(section => {
+
+const sectionTop = section.offsetTop - 150;
+
+if(window.scrollY >= sectionTop){
+
+currentSection = section.getAttribute("id");
+
+}
+
+});
+
+navLinks.forEach(link => {
+
+link.classList.remove("active");
+
+if(link.getAttribute("href") === "#" + currentSection){
+
+link.classList.add("active");
+
+}
+
+});
+
+});
+    </script>
+</body>
+</html>
