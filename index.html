@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BioMove | كرسي طبي متحرك ذكي</title>
@@ -593,27 +594,37 @@ box-shadow .3s;
     <div class="gallery-grid reveal">
 
         <div class="gallery-item">
-            <img src="images/mainchair.jpeg">
+            <a href="images/mainchair.jpeg" data-fancybox="gallery">
+            <img src="images/mainchair.jpeg" alt="صورة المشروع الأول" class="gallery-img" />
+        </a>
             <span>الكرسي الذكي</span>
         </div>
 
         <div class="gallery-item">
-            <img src="images/schematic.png">
+            <a href="images/schematic.png" data-fancybox="gallery">
+            <img src="images/schematic.png" alt="صورة المشروع الثاني" class="gallery-img" />
+        </a>
             <span>الإلكترونيات</span>
         </div>
 
         <div class="gallery-item">
-            <img src="images/esp.jpg">
+            <a href="images/esp.jpg" data-fancybox="gallery">
+            <img src="images/esp.jpg" alt="صورة المشروع الثالث" class="gallery-img" />
+        </a>
             <span>ESP32</span>
         </div>
 
         <div class="gallery-item">
-            <img src="images/application.jpeg">
+            <a href="images/application.jpeg" data-fancybox="gallery">
+            <img src="images/application.jpeg" alt="صورة المشروع الرابع" class="gallery-img" />
+        </a>
             <span>التطبيق</span>
         </div>
 
         <div class="gallery-item">
-            <img src="images/isometric.png">
+            <a href="images/isometric.png" data-fancybox="gallery">
+            <img src="images/isometric.png" alt="صورة المشروع الخامس" class="gallery-img" />
+        </a>
             <span>التجميع</span>
         </div>
 
@@ -775,27 +786,37 @@ Live <span>Dashboard</span>
     <div class="app-grid reveal">
 
         <div class="app-card">
-            <img src="images/app5.jpeg" alt="Login">
+            <a href="images/app5.jpeg" data-fancybox="gallery">
+            <img src="images/app5.jpeg" alt="صورة المشروع الأول" class="gallery-img" />
+        </a>
             <h3>Emergency Tips</h3>
         </div>
 
         <div class="app-card">
-            <img src="images/app4.jpeg" alt="Joystick">
+            <a href="images/app4.jpeg" data-fancybox="gallery">
+            <img src="images/app4.jpeg" alt="Joystick" class="gallery-img" />
+        </a>
             <h3>Control</h3>
         </div>
 
         <div class="app-card">
-            <img src="images/app1.jpeg" alt="Health">
+            <a href="images/app1.jpeg" data-fancybox="gallery">
+            <img src="images/app1.jpeg" alt="Health" class="gallery-img" />
+        </a>
             <h3>Health Monitor</h3>
         </div>
 
         <div class="app-card">
-            <img src="images/app3.jpeg" alt="GPS">
+            <a href="images/app3.jpeg" data-fancybox="gallery">
+            <img src="images/app3.jpeg" alt="GPS" class="gallery-img" />
+        </a>
             <h3>GPS</h3>
         </div>
 
         <div class="app-card">
-            <img src="images/app2.jpeg" alt="Settings">
+            <a href="images/app2.jpeg" data-fancybox="gallery">
+            <img src="images/app2.jpeg" alt="Settings" class="gallery-img" />
+        </a>
             <h3>Settings</h3>
         </div>
 
@@ -890,7 +911,9 @@ Live <span>Dashboard</span>
         const body = document.body;
 
         const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
+        
+        // لو الزائر اختار "دارك" قبل كده، أو لو دي أول مرة يفتح الموقع (null)
+        if (savedTheme === 'dark' || savedTheme === null) {
             body.classList.add('dark-mode');
             themeIcon.classList.replace('fa-moon', 'fa-sun');
         }
@@ -907,11 +930,24 @@ Live <span>Dashboard</span>
         });
 
         // 2. قائمة الهاتف وزر العودة للأعلى
-        const menuBtn = document.querySelector('.menu-btn');
-        const backToTopBtn = document.getElementById('back-to-top');
+const menuBtn = document.querySelector('.menu-btn');
+const navMenuContainer = document.querySelector('.nav-links'); // قمنا بتعريف حاوية القائمة هنا
+const backToTopBtn = document.getElementById('back-to-top');
 
-        menuBtn.addEventListener('click', () => { navLinks.classList.toggle('active'); });
-        backToTopBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+// ربط الزر بظهور وإخفاء القائمة
+menuBtn.addEventListener('click', () => { 
+    navMenuContainer.classList.toggle('active'); 
+});
+
+// إغلاق القائمة تلقائياً عند الضغط على أي قسم (لتحسين تجربة المستخدم على الموبايل)
+const mobileLinks = document.querySelectorAll('.nav-links a');
+mobileLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        navMenuContainer.classList.remove('active');
+    });
+});
+
+backToTopBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
 
         // 3. حركة ظهور العناصر عند النزول وشريط التقدم وزر الأعلى
         function reveal() {
@@ -1172,5 +1208,12 @@ link.classList.add("active");
 
 });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <script>
+  Fancybox.bind('[data-fancybox="gallery"]', {
+    // يمكنك إضافة خيارات تخصيص هنا مستقبلاً
+    // مثل تغيير تأثيرات الفتح والإغلاق
+  });
+</script>
 </body>
 </html>
