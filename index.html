@@ -573,6 +573,11 @@ box-shadow .3s;
                 <h4>القيادة اليدوية (Joystick)</h4>
                 <p>عصا تحكم مدمجة عالية الحساسية تتيح للمستخدم التنقل التقليدي بثبات ومرونة تامة.</p>
             </div>
+            <div class="feature-card">
+                <i class="fas fa-wave-square feature-icon" style="color: #22c55e;"></i>
+                <h4>توجيه عبر العضلات (EMG)</h4>
+                <p>دعم كامل للتحكم الحيوي عن طريق نبضات العضلات، ومخصص لمساعدة حالات الشلل الرباعي أو النصفي.</p>
+            </div>
             <div class="feature-card safe">
                 <i class="fas fa-exclamation-triangle feature-icon"></i>
                 <h4>تجنب الاصطدام</h4>
@@ -645,12 +650,12 @@ box-shadow .3s;
 </div>
 
 <div class="stat-card">
-<h1>6</h1>
+<h1>7</h1>
 <p>Sensors</p>
 </div>
 
 <div class="stat-card">
-<h1>2</h1>
+<h1>3</h1>
 <p>Control Modes</p>
 </div>
 
@@ -680,7 +685,7 @@ box-shadow .3s;
         <h2 class="section-title reveal">معمارية <span>النظام</span></h2>
         <div class="architecture-box reveal">
             <div class="data-flow">
-                <div class="flow-step"><i class="fas fa-microchip"></i><h4>Sensors</h4></div>
+                <div class="flow-step"><i class="fas fa-microchip"></i><h4>Sensors & EMG</h4></div>
                 <i class="fas fa-chevron-left flow-arrow"></i>
                 <div class="flow-step"><i class="fas fa-memory"></i><h4>ESP32 Core</h4></div>
                 <i class="fas fa-chevron-left flow-arrow"></i>
@@ -696,6 +701,13 @@ Live <span>Dashboard</span>
 </h2>
 
 <div class="dashboard-grid reveal">
+    <div class="monitor-card">
+    <div class="card-header">
+        <span><i class="fas fa-wave-square"></i> EMG Activity</span>
+        <span class="live-badge">LIVE</span>
+    </div>
+    <div class="main-reading" id="emg-display" style="color: #22c55e;">120<span>µV</span></div>
+</div>
 
 <div class="monitor-card">
 <div class="card-header">
@@ -980,6 +992,7 @@ const emergency=document.getElementById("emergency");
 const motor=document.getElementById("motor");
 const temp=document.getElementById("temp-display");
 const heart=document.getElementById("heart-rate-display");
+const emg=document.getElementById("emg-display");
 
 function flash(el){
 
@@ -1002,6 +1015,10 @@ let b=95+Math.floor(Math.random()*5);
 battery.innerHTML=b+"<span>%</span>";
 
 flash(battery);
+// EMG Sensor Simulation
+let emgVal=20+Math.floor(Math.random()*280);
+emg.innerHTML=emgVal+"<span>µV</span>";
+flash(emg);
 
 // Speed
 
